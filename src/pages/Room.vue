@@ -202,21 +202,19 @@ export default {
       return `${m}:${s}`
     },
     cutSong(index) {
-      if (this.playIndex !== index || !index) {
-        this.forcePause()
-        this.playIndex = index
-        this.playingMusicName = '正在解析'
-        axios({
-          url: `https://ncm.api.chimon.work/song/url?id=${this.playlist[index].id}`,
-          method: 'POST',
-          data: {
-            cookie: localStorage.getItem('MAL_NCM_COOKIE')
-          }
-        }).then(({data:res}) => {
-          this.$refs.audio.src = res.data[0].url
-          this.forcePlay()
-        })
-      }
+      this.forcePause()
+      this.playIndex = index
+      this.playingMusicName = '正在解析'
+      axios({
+        url: `https://ncm.api.chimon.work/song/url?id=${this.playlist[index].id}`,
+        method: 'POST',
+        data: {
+          cookie: localStorage.getItem('MAL_NCM_COOKIE')
+        }
+      }).then(({data:res}) => {
+        this.$refs.audio.src = res.data[0].url
+        this.forcePlay()
+      })
     },
     toNextSong() {
       this.forcePause()
